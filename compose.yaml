@@ -1,9 +1,6 @@
 services:
   mocopi-posture:
-    # image: mocopi-app:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/aoi0412/hakkason2026-mocopi:latest
     ports:
       - "8002:8002/tcp"
       - "8765:8765/tcp"
