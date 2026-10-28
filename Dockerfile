@@ -7,10 +7,10 @@ ENV PYTHONUNBUFFERED=1 \
     DATA_DIR=/data
 
 WORKDIR /app
-COPY receiver.py ./receiver.py
-# COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
+COPY mocopi_server.py ./mocopi_server.py
+COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
 RUN mkdir -p /data
 VOLUME ["/data"]
 
 EXPOSE 8002/tcp 8765/tcp 12351/udp
-CMD ["python", "receiver.py"]
+CMD ["python", "mocopi_server.py"]
