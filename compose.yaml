@@ -1,0 +1,10 @@
+services:
+  mocopi-receiver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "12351:12351/udp"
+    environment:
+      MOCOPI_UDP_PORT: "12351"
+    restart: unless-stopped
