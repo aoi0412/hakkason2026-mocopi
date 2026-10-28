@@ -2,11 +2,11 @@ services:
   mocopi-posture:
     image: mocopi-app:latest
     ports:
-      - "8000:8000/tcp"
+      - "8002:8002/tcp"
       - "8765:8765/tcp"
       - "12351:12351/udp"
     environment:
-      HTTP_PORT: "8000"
+      HTTP_PORT: "8002"
       WS_PORT: "8765"
       MOCOPI_PORT: "12351"
       DATA_DIR: /data
