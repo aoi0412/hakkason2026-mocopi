@@ -1,6 +1,6 @@
 services:
   mocopi-posture:
-    image: ghcr.io/aoi0412/hakkason2026-mocopi:latest
+    image: ghcr.io/aoi0412/hakkason2026-mocopi:v1
     ports:
       - "8002:8002/tcp"
       - "8765:8765/tcp"
