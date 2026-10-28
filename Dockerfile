@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 COPY receiver.py ./receiver.py
-COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
+# COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
 RUN mkdir -p /data
 VOLUME ["/data"]
 
