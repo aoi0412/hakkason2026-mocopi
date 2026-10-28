@@ -10,9 +10,9 @@ Docker Desktop を起動し、このリポジトリのルートで実行しま�
 docker compose up --build
 ```
 
-ログに `PC操作画面: http://localhost:8000/` と `mocopi UDP受信を開始しました: 0.0.0.0:12351` が出たら起動しています。
+ログに `PC操作画面: http://localhost:8002/` と `mocopi UDP受信を開始しました: 0.0.0.0:12351` が出たら起動しています。
 
-Mac の Wi-Fi IPv4 アドレスは、ターミナルで `ipconfig getifaddr en0` を実行して確認できます。Mac とスマートフォンのブラウザーで `http://<MacのLAN側IPv4アドレス>:8000/` を開いてください。スマートフォンと Mac は同じローカルネットワークに接続します。
+Mac の Wi-Fi IPv4 アドレスは、ターミナルで `ipconfig getifaddr en0` を実行して確認できます。Mac とスマートフォンのブラウザーで `http://<MacのLAN側IPv4アドレス>:8002/` を開いてください。スマートフォンと Mac は同じローカルネットワークに接続します。
 
 停止するには `Ctrl+C` を押すか、別ターミナルで次を実行します。
 
@@ -36,7 +36,7 @@ docker compose logs -f
 
 ## 公開ポート
 
-- `8000/tcp`: Web 画面、プロフィール API
+- `8002/tcp`: Web 画面、プロフィール API
 - `8765/tcp`: WebSocket 中継
 - `12351/udp`: mocopi モーション受信
 
