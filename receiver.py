@@ -3,7 +3,7 @@ import socket
 import time
 
 HOST = "0.0.0.0"
-PORT = int(os.environ.get("MOCOPI_UDP_PORT", "12351"))
+PORT = int(os.environ.get("MOCOPI_PORT", "12351"))
 BUFFER_SIZE = 65535
 REPORT_INTERVAL = 1.0
 
