@@ -1,9 +1,16 @@
 FROM python:3.12-slim
 
-WORKDIR /workspace
-COPY receiver.py /app/receiver.py
+ENV PYTHONUNBUFFERED=1 \
+    HTTP_PORT=8000 \
+    WS_PORT=8765 \
+    MOCOPI_PORT=12351 \
+    DATA_DIR=/data
 
-ENV MOCOPI_UDP_PORT=12351
-EXPOSE 12351/udp
+WORKDIR /app
+COPY mocopi_server.py ./mocopi_server.py
+COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
+RUN mkdir -p /data
+VOLUME ["/data"]
 
-CMD ["python", "-u", "/app/receiver.py"]
+EXPOSE 8000/tcp 8765/tcp 12351/udp
+CMD ["python", "mocopi_server.py"]

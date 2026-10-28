@@ -1,30 +1,43 @@
-# mocopi UDP Receiver (Docker)
+# mocopi 姿勢サポート（Docker）
 
-mocopi アプリからの UDP パケットを受信し、受信レート、送信元、パケットサイズ、先頭 32 バイトを表示します。受信データはバイナリのままで、モーション情報へのデコードは行いません。
+姿勢モニターの Web 画面、プロフィール共有 API、PC・スマートフォン間の WebSocket 通知、mocopi UDP 受信を Docker で起動します。プロフィールは名前付きボリュームに保存されます。
 
 ## 起動
 
-Docker Desktop を起動し、このフォルダで実行します。
+Docker Desktop を起動し、このリポジトリのルートで実行します。
 
 ```sh
 docker compose up --build
 ```
 
-停止するには `Ctrl+C` を押してから `docker compose down` を実行します。
+ログに `PC操作画面: http://localhost:8000/` と `mocopi UDP受信を開始しました: 0.0.0.0:12351` が出たら起動しています。
 
-## mocopi アプリの設定
+Mac の Wi-Fi IPv4 アドレスは、ターミナルで `ipconfig getifaddr en0` を実行して確認できます。Mac とスマートフォンのブラウザーで `http://<MacのLAN側IPv4アドレス>:8000/` を開いてください。スマートフォンと Mac は同じローカルネットワークに接続します。
 
-1. PC とスマートフォンを同じローカルネットワークに接続します。
-2. PC の IPv4 アドレスを確認します（Windows では `ipconfig`）。
-3. mocopi アプリの PC 接続設定で、その PC の IPv4 アドレス、UDP ポート `12351`、送信フォーマット `mocopi (UDP)` を指定します。
-4. モーション画面で送信を開始し、このターミナルに受信ログが出ることを確認します。
+停止するには `Ctrl+C` を押すか、別ターミナルで次を実行します。
 
-`localhost` やコンテナの IP アドレスではなく、Windows PC の LAN 側 IPv4 アドレスをアプリに設定してください。Windows ファイアウォールで UDP `12351` の受信が許可されている必要があります。
+```sh
+docker compose down
+```
 
-## ポート変更
+ログ確認：
 
-`compose.yaml` のホスト側・コンテナ側ポートと `MOCOPI_UDP_PORT` を同じ番号に変更してください。
+```sh
+docker compose logs -f
+```
 
-## 注意
+## mocopi データの接続
 
-mocopi の UDP モーションデータは暗号化されません。ローカルネットワーク内で使用してください。
+サーバーは UDP `12351` で mocopi データを受信し、ブラウザーへ WebSocket で中継します。送信機器から UDP 宛先を指定できる場合は、Mac の LAN IPv4 アドレス、ポート `12351`、`mocopi (UDP)` 形式を指定してください。
+
+### Windows の mocopi PC アプリ
+
+このコンテナは UDP `12351` の mocopi 形式受信機です。Windows の mocopi PC アプリを使う場合、アプリ側の出力がこの受信形式と宛先に対応している必要があります。アプリから直接 UDP `12351` に送れない場合は、mocopi Receiver Plugin 対応ソフトウェアまたは別の中継処理が必要です。
+
+## 公開ポート
+
+- `8000/tcp`: Web 画面、プロフィール API
+- `8765/tcp`: WebSocket 中継
+- `12351/udp`: mocopi モーション受信
+
+LAN 内で使用してください。mocopi の UDP データは暗号化されません。

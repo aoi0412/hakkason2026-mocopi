@@ -1,8 +1,21 @@
 services:
-  mocopi-receiver:
-    image: mocopi-app:latest
+  mocopi-posture:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
+      - "8000:8000/tcp"
+      - "8765:8765/tcp"
       - "12351:12351/udp"
     environment:
-      MOCOPI_UDP_PORT: "12351"
+      HTTP_PORT: "8000"
+      WS_PORT: "8765"
+      MOCOPI_PORT: "12351"
+      DATA_DIR: /data
+      PUBLIC_URL: ${PUBLIC_URL:-}
+    volumes:
+      - mocopi-profile:/data
     restart: unless-stopped
+
+volumes:
+  mocopi-profile:
