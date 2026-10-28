@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
-    HTTP_PORT=8000 \
+    HTTP_PORT=8002 \
     WS_PORT=8765 \
     MOCOPI_PORT=12351 \
     DATA_DIR=/data
@@ -12,5 +12,5 @@ COPY mocopi-posture-monitor.html ./mocopi-posture-monitor.html
 RUN mkdir -p /data
 VOLUME ["/data"]
 
-EXPOSE 8000/tcp 8765/tcp 12351/udp
+EXPOSE 8002/tcp 8765/tcp 12351/udp
 CMD ["python", "mocopi_server.py"]
