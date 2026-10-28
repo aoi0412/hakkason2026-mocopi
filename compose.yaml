@@ -1,6 +1,6 @@
 services:
   mocopi-posture:
-    image: mocopi-app:v1
+    image: mocopi-app:v2
     ports:
       - "8002:8002/tcp"
       - "8765:8765/tcp"
