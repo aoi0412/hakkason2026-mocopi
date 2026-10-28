@@ -1,8 +1,6 @@
 services:
   mocopi-posture:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: mocopi-app:latest
     ports:
       - "8000:8000/tcp"
       - "8765:8765/tcp"
