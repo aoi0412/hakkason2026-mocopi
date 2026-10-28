@@ -1,8 +1,7 @@
 services:
   mocopi-receiver:
     build:
-      context: .
-      dockerfile: Dockerfile
+      image: mocopi-app:latest
     ports:
       - "12351:12351/udp"
     environment:
