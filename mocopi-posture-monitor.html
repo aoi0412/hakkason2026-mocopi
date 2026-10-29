@@ -1,1201 +1,178 @@
 <!doctype html>
 <html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#f5f7f4" />
-		<title>姿勢サポート | mocopi</title>
-		<style>
-			:root {
-				--ink: #17231f;
-				--muted: #68756f;
-				--line: #e4e9e5;
-				--paper: #fff;
-				--bg: #f4f7f4;
-				--green: #176d51;
-				--green2: #e8f4ee;
-				--amber: #e4a344;
-				--red: #b84c3d;
-				--shadow: 0 14px 40px #1c30250b;
-			}
-			* {
-				box-sizing: border-box;
-			}
-			body {
-				margin: 0;
-				background: var(--bg);
-				color: var(--ink);
-				font:
-					15px/1.55 system-ui,
-					-apple-system,
-					"Segoe UI",
-					sans-serif;
-			}
-			button,
-			input {
-				font: inherit;
-			}
-			button {
-				cursor: pointer;
-			}
-			.shell {
-				max-width: 1120px;
-				margin: auto;
-				padding: 26px 28px 48px;
-			}
-			header {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				margin-bottom: 26px;
-			}
-			.brand {
-				display: flex;
-				gap: 12px;
-				align-items: center;
-			}
-			.mark {
-				width: 42px;
-				height: 42px;
-				border-radius: 14px;
-				background: var(--green);
-				color: white;
-				display: grid;
-				place-items: center;
-				font-weight: 800;
-				font-size: 20px;
-			}
-			.brand b {
-				display: block;
-				font-size: 16px;
-				letter-spacing: 0.01em;
-			}
-			.brand span {
-				color: var(--muted);
-				font-size: 12px;
-			}
-			.connection {
-				display: flex;
-				align-items: center;
-				gap: 8px;
-				border: 1px solid var(--line);
-				background: var(--paper);
-				border-radius: 999px;
-				padding: 8px 13px;
-				color: var(--muted);
-				font-size: 12px;
-			}
-			.dot {
-				height: 8px;
-				width: 8px;
-				background: #d29a43;
-				border-radius: 50%;
-			}
-			.dot.on {
-				background: #28a06d;
-				box-shadow: 0 0 0 3px #28a06d20;
-			}
-			.hero {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-end;
-				margin: 0 0 22px;
-			}
-			.eyebrow {
-				color: var(--green);
-				font-size: 11px;
-				font-weight: 800;
-				letter-spacing: 0.1em;
-				text-transform: uppercase;
-			}
-			.hero h1 {
-				font-size: 30px;
-				line-height: 1.2;
-				margin: 7px 0;
-			}
-			.hero p {
-				margin: 0;
-				color: var(--muted);
-			}
-			.grid {
-				display: grid;
-				grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
-				gap: 18px;
-			}
-			.card {
-				background: var(--paper);
-				border: 1px solid var(--line);
-				border-radius: 19px;
-				padding: 21px;
-				box-shadow: var(--shadow);
-			}
-			.card h2 {
-				font-size: 16px;
-				margin: 0;
-			}
-			.card-head {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 17px;
-			}
-			.small {
-				font-size: 12px;
-				color: var(--muted);
-			}
-			.state {
-				border-radius: 15px;
-				background: var(--green2);
-				padding: 17px 18px;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 17px;
-			}
-			.state.alert {
-				background: #fff0eb;
-			}
-			.state .label {
-				font-size: 12px;
-				color: var(--muted);
-			}
-			.state strong {
-				display: block;
-				font-size: 19px;
-				margin-top: 3px;
-			}
-			.state-icon {
-				font-size: 25px;
-			}
-			.metrics {
-				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				gap: 10px;
-			}
-			.metric {
-				border: 1px solid var(--line);
-				border-radius: 13px;
-				padding: 12px 13px;
-			}
-			.metric .top {
-				display: flex;
-				justify-content: space-between;
-				color: var(--muted);
-				font-size: 12px;
-			}
-			.metric strong {
-				font-size: 20px;
-			}
-			.unit {
-				font-size: 12px;
-				color: var(--muted);
-				margin-left: 3px;
-			}
-			.meter {
-				height: 5px;
-				background: #edf1ee;
-				border-radius: 9px;
-				margin-top: 7px;
-				overflow: hidden;
-			}
-			.meter i {
-				display: block;
-				height: 100%;
-				width: 0;
-				background: var(--green);
-				border-radius: 9px;
-				transition: width 0.2s;
-			}
-			.actions {
-				display: flex;
-				gap: 9px;
-				flex-wrap: wrap;
-				margin-top: 16px;
-			}
-			.btn {
-				border: 1px solid var(--line);
-				background: #fff;
-				color: var(--ink);
-				border-radius: 11px;
-				padding: 9px 13px;
-				font-weight: 700;
-				font-size: 13px;
-			}
-			.btn:hover {
-				background: #f7faf8;
-			}
-			.btn.primary {
-				background: var(--green);
-				border-color: var(--green);
-				color: #fff;
-			}
-			.btn.primary:hover {
-				background: #10583f;
-			}
-			.btn.danger {
-				color: var(--red);
-			}
-			.notify-options {
-				display: flex;
-				gap: 16px;
-				flex-wrap: wrap;
-				margin-top: 14px;
-				padding: 12px 13px;
-				border: 1px solid var(--line);
-				border-radius: 12px;
-				background: #fbfcfb;
-			}
-			.notify-options label {
-				display: flex;
-				align-items: center;
-				gap: 7px;
-				font-size: 13px;
-				font-weight: 700;
-				cursor: pointer;
-			}
-			.notify-options input {
-				accent-color: var(--green);
-				width: 17px;
-				height: 17px;
-			}
-			.pose-list {
-				display: grid;
-				gap: 9px;
-			}
-			.pose-row {
-				display: flex;
-				align-items: center;
-				gap: 11px;
-				border: 1px solid var(--line);
-				border-radius: 13px;
-				padding: 11px 12px;
-			}
-			.pose-emoji {
-				width: 36px;
-				height: 36px;
-				display: grid;
-				place-items: center;
-				background: #f3f6f4;
-				border-radius: 11px;
-				font-size: 18px;
-			}
-			.pose-info {
-				min-width: 0;
-				flex: 1;
-			}
-			.pose-info strong {
-				font-size: 13px;
-			}
-			.pose-info span {
-				display: block;
-				color: var(--muted);
-				font-size: 11px;
-			}
-			.pill {
-				font-size: 10px;
-				padding: 4px 8px;
-				border-radius: 99px;
-				background: #f1f3f2;
-				color: var(--muted);
-			}
-			.pill.active {
-				background: #fff0eb;
-				color: var(--red);
-			}
-			.section {
-				margin-top: 18px;
-			}
-			.section-title {
-				font-size: 12px;
-				font-weight: 800;
-				margin: 0 0 9px;
-			}
-			.form-row {
-				display: flex;
-				gap: 9px;
-			}
-			.form-row input {
-				min-width: 0;
-				flex: 1;
-				border: 1px solid var(--line);
-				border-radius: 10px;
-				padding: 9px 11px;
-				outline: none;
-			}
-			.form-row input:focus {
-				border-color: var(--green);
-			}
-			.profile {
-				margin-top: 18px;
-				border-top: 1px solid var(--line);
-				padding-top: 15px;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-			.profile b {
-				font-size: 13px;
-			}
-			.profile span {
-				font-size: 11px;
-				color: var(--muted);
-			}
-			.log {
-				max-height: 160px;
-				overflow: auto;
-				display: grid;
-				gap: 7px;
-			}
-			.log-item {
-				display: flex;
-				justify-content: space-between;
-				border-bottom: 1px solid #eff2ef;
-				padding: 5px 0;
-				font-size: 12px;
-			}
-			.log-item span:last-child {
-				color: var(--muted);
-			}
-			details {
-				margin-top: 18px;
-				border: 1px solid var(--line);
-				border-radius: 14px;
-				padding: 13px 14px;
-				background: #fbfcfb;
-			}
-			summary {
-				cursor: pointer;
-				font-size: 12px;
-				font-weight: 800;
-			}
-			.details-body {
-				font-size: 12px;
-				color: var(--muted);
-				padding-top: 9px;
-			}
-			.details-body code {
-				color: #31483e;
-				background: #eff3f0;
-				padding: 2px 4px;
-				border-radius: 4px;
-			}
-			.range {
-				width: 100%;
-				accent-color: var(--green);
-			}
-			.sim {
-				margin-top: 18px;
-				padding-top: 15px;
-				border-top: 1px solid var(--line);
-			}
-			.sim-buttons {
-				display: flex;
-				gap: 7px;
-				flex-wrap: wrap;
-			}
-			.btn.simsel {
-				font-size: 11px;
-				padding: 7px 9px;
-			}
-			.btn.simsel.selected {
-				border-color: var(--green);
-				color: var(--green);
-				background: var(--green2);
-			}
-			.toast {
-				position: fixed;
-				bottom: 20px;
-				left: 50%;
-				transform: translateX(-50%) translateY(14px);
-				opacity: 0;
-				background: #17231f;
-				color: white;
-				padding: 11px 16px;
-				border-radius: 12px;
-				font-size: 13px;
-				transition: 0.2s;
-				pointer-events: none;
-				box-shadow: var(--shadow);
-			}
-			.toast.show {
-				opacity: 1;
-				transform: translateX(-50%) translateY(0);
-			}
-			@media (max-width: 760px) {
-				.shell {
-					padding: 19px 15px 35px;
-				}
-				.hero {
-					display: block;
-				}
-				.hero h1 {
-					font-size: 26px;
-				}
-				.grid {
-					grid-template-columns: 1fr;
-				}
-				.card {
-					padding: 17px;
-				}
-				.connection {
-					font-size: 11px;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<main class="shell">
-			<header>
-				<div class="brand">
-					<div class="mark">姿</div>
-					<div><b>姿勢サポート</b><span>mocopi posture assistant</span></div>
-				</div>
-				<div class="connection">
-					<i class="dot" id="dot"></i><span id="connectionText">デモモード</span>
-				</div>
-			</header>
-			<section class="hero">
-				<div>
-					<div class="eyebrow">PRESENTATION MODE</div>
-					<h1>発表中の姿勢をサポートします</h1>
-					<p>PCで姿勢を登録・判定し、スマホは振動通知だけを受け取ります。</p>
-				</div>
-			</section>
-			<div class="grid">
-				<section class="card">
-					<div class="card-head">
-						<h2>いまの姿勢</h2>
-						<span class="small" id="updated">サンプルデータ</span>
-					</div>
-					<div class="state" id="stateBox">
-						<div>
-							<div class="label">判定</div>
-							<strong id="stateText">基本姿勢</strong>
-						</div>
-						<div class="state-icon" id="stateIcon">✓</div>
-					</div>
-					<div class="metrics" id="metrics"></div>
-					<div class="actions">
-						<button class="btn primary" id="startBtn">発表モードを開始</button
-						><button class="btn" id="stopBtn">終了</button
-						><button class="btn" id="vibeBtn">スマホへ振動テスト</button>
-					</div>
-					<div class="notify-options" aria-label="検知時の通知方法">
-						<label><input id="notifyVibration" type="checkbox" checked />振動で知らせる</label
-						><label><input id="notifySound" type="checkbox" checked />音で知らせる</label>
-					</div>
-					<div class="sim">
-						<div class="section-title">動作サンプル（画面の確認用）</div>
-						<div class="sim-buttons">
-							<button class="btn simsel selected" data-sim="base">基本姿勢</button
-							><button class="btn simsel" data-sim="face">顔に手を近づける</button
-							><button class="btn simsel" data-sim="waist">腰に手を当てる</button>
-						</div>
-					</div>
-					<div class="sim">
-						<div class="section-title">スマホでも使う</div>
-						<div class="small" id="phoneStatus">同じWebアプリを開いている画面を確認中…</div>
-						<div class="small" id="phoneUrl" style="margin-top: 6px">スマホで開くURLを取得中…</div>
-					</div>
-					<details>
-						<summary>接続について</summary>
-						<div class="details-body">
-							PCとスマホのどちらでも、この同じWebアプリで姿勢登録と発表モード操作ができます。発表モードを実行しているスマホは、その画面で直接振動します。登録内容はブラウザーごとに保存されます。
-						</div>
-					</details>
-				</section>
-				<aside class="card">
-					<div class="card-head">
-						<h2>あなたの姿勢ルール</h2>
-						<span class="small" id="count">0件</span>
-					</div>
-					<div class="section-title">基本姿勢</div>
-					<div class="pose-row" id="baseRow">
-						<div class="pose-emoji">🧍</div>
-						<div class="pose-info">
-							<strong>未登録</strong><span>基本姿勢を登録してください</span>
-						</div>
-						<button class="btn" id="baseCapture">登録</button>
-					</div>
-					<div class="section">
-						<div class="section-title">お知らせする姿勢</div>
-						<div class="pose-list" id="poseList"></div>
-					</div>
-					<div class="section">
-						<div class="section-title">新しい姿勢を登録</div>
-						<div class="form-row">
-							<input id="poseName" maxlength="24" placeholder="例：顔に手を近づける" /><button
-								class="btn primary"
-								id="addPose"
-							>
-								現在の姿勢を登録
-							</button>
-						</div>
-						<div class="small" style="margin-top: 7px">
-							登録したい姿勢をとってから押してください。
-						</div>
-					</div>
-					<div class="section">
-						<div class="section-title">判定の調整</div>
-						<div class="small">角度の許容差: <b id="tolText">20°</b></div>
-						<input class="range" id="tolerance" type="range" min="8" max="40" value="20" />
-						<div class="small">通知までの継続時間: <b id="holdText">0.8秒</b></div>
-						<input class="range" id="hold" type="range" min="3" max="20" value="8" />
-					</div>
-					<div class="profile">
-						<div>
-							<b>共有プロフィール</b><br /><span id="profileSyncStatus">このサーバーと同期</span>
-						</div>
-						<button class="btn danger" id="clearBtn">すべて消去</button>
-					</div>
-				</aside>
-			</div>
-			<section class="card section">
-				<div class="card-head">
-					<h2>通知履歴</h2>
-					<span class="small">直近の検知</span>
-				</div>
-				<div class="log" id="log"><div class="small">まだ通知はありません</div></div>
-			</section>
-		</main>
-		<div class="toast" id="toast"></div>
-		<script>
-			(() => {
-				const FEATURE_NAMES = {
-					leftElbow: "左ひじ角度",
-					rightElbow: "右ひじ角度",
-					leftShoulder: "左肩角度",
-					rightShoulder: "右肩角度",
-					leftWristHead: "左手首〜頭",
-					rightWristHead: "右手首〜頭",
-					leftWristHip: "左手首〜腰",
-					rightWristHip: "右手首〜腰",
-				};
-				const DEMO = {
-					base: {
-						leftElbow: 155,
-						rightElbow: 158,
-						leftShoulder: 18,
-						rightShoulder: 20,
-						leftWristHead: 0.62,
-						rightWristHead: 0.64,
-						leftWristHip: 0.48,
-						rightWristHip: 0.49,
-					},
-					face: {
-						leftElbow: 55,
-						rightElbow: 158,
-						leftShoulder: 62,
-						rightShoulder: 20,
-						leftWristHead: 0.08,
-						rightWristHead: 0.64,
-						leftWristHip: 0.45,
-						rightWristHip: 0.5,
-					},
-					waist: {
-						leftElbow: 78,
-						rightElbow: 158,
-						leftShoulder: 42,
-						rightShoulder: 20,
-						leftWristHead: 0.48,
-						rightWristHead: 0.64,
-						leftWristHip: 0.08,
-						rightWristHip: 0.49,
-					},
-				};
-				const $ = (s) => document.querySelector(s);
-				const storeKey = "mocopiPostureProfileV1";
-				let profile = read(),
-					current = { ...DEMO.base },
-					running = false,
-					socket = null,
-					alertAt = 0,
-					holdStart = 0,
-					timer = null,
-					liveData = false,
-					profileRevision = 0,
-					profileEdited = false,
-					profileSyncTimer = null;
-				function read() {
-					try {
-						const saved = JSON.parse(localStorage.getItem(storeKey)) || {};
-						return {
-							base: null,
-							poses: [],
-							tolerance: 20,
-							hold: 8,
-							notifyVibration: true,
-							notifySound: true,
-							...saved,
-						};
-					} catch {
-						return {
-							base: null,
-							poses: [],
-							tolerance: 20,
-							hold: 8,
-							notifyVibration: true,
-							notifySound: true,
-						};
-					}
-				}
-				function save() {
-					localStorage.setItem(storeKey, JSON.stringify(profile));
-					renderProfile();
-					profileEdited = true;
-					clearTimeout(profileSyncTimer);
-					profileSyncTimer = setTimeout(syncProfileToServer, 300);
-				}
-				async function syncProfileToServer() {
-					try {
-						$("#profileSyncStatus").textContent = "サーバーへ保存中…";
-						const response = await fetch("/api/profile", {
-							method: "POST",
-							headers: { "Content-Type": "application/json" },
-							body: JSON.stringify({ profile }),
-						});
-						if (!response.ok) throw new Error("save failed");
-						const result = await response.json();
-						profileRevision = result.revision;
-						profileEdited = false;
-						$("#profileSyncStatus").textContent = "PC・スマホ間で同期済み";
-					} catch {
-						$("#profileSyncStatus").textContent = "端末内に保存済み・サーバー未接続";
-					}
-				}
-				async function syncProfileFromServer() {
-					try {
-						const response = await fetch("/api/profile", { cache: "no-store" });
-						if (!response.ok) return;
-						const remote = await response.json();
-						const revision = Number(remote.revision) || 0;
-						if (revision > profileRevision) {
-							if (profileEdited) {
-								syncProfileToServer();
-								return;
-							}
-							if (remote.profile) {
-								profile = remote.profile;
-								profileRevision = revision;
-								localStorage.setItem(storeKey, JSON.stringify(profile));
-								renderProfile();
-								evaluate();
-							}
-						} else if (!revision && !profileEdited && (profile.base || profile.poses.length)) {
-							profileEdited = true;
-							syncProfileToServer();
-						}
-					} catch {
-						$("#profileSyncStatus").textContent = "端末内に保存済み・サーバー未接続";
-					}
-				}
-				function toast(msg) {
-					const el = $("#toast");
-					el.textContent = msg;
-					el.classList.add("show");
-					setTimeout(() => el.classList.remove("show"), 2200);
-				}
-				function round(n, d = 0) {
-					return Number(n).toFixed(d);
-				}
-				function renderMetrics() {
-					const el = $("#metrics");
-					el.innerHTML = "";
-					for (const [key, label] of Object.entries(FEATURE_NAMES)) {
-						if (current[key] === undefined) continue;
-						const v = current[key],
-							isDist = key.includes("Wrist");
-						const display = isDist ? round(v, 2) : round(v);
-						const max = isDist ? 0.8 : 180;
-						const box = document.createElement("div");
-						box.className = "metric";
-						box.innerHTML = `<div class="top"><span>${label}</span><span>${isDist ? "m" : "°"}</span></div><strong>${display}</strong><div class="meter"><i style="width:${Math.min(100, Math.max(3, (v / max) * 100))}%"></i></div>`;
-						el.append(box);
-					}
-				}
-				function renderProfile() {
-					const base = $("#baseRow");
-					if (profile.base) {
-						base.querySelector(".pose-info").innerHTML =
-							`<strong>登録済み</strong><span>${new Date(profile.base.savedAt).toLocaleString("ja-JP", { hour: "2-digit", minute: "2-digit" })} に登録</span>`;
-						$("#baseCapture").textContent = "再登録";
-					} else {
-						base.querySelector(".pose-info").innerHTML =
-							"<strong>未登録</strong><span>基本姿勢を登録してください</span>";
-						$("#baseCapture").textContent = "登録";
-					}
-					$("#count").textContent = `${profile.poses.length}件`;
-					const list = $("#poseList");
-					list.innerHTML = "";
-					if (!profile.poses.length)
-						list.innerHTML = '<div class="small">まだ登録されていません</div>';
-					for (const p of profile.poses) {
-						const row = document.createElement("div");
-						row.className = "pose-row";
-						row.innerHTML = `<div class="pose-emoji">🙋</div><div class="pose-info"><strong>${escapeHtml(p.name)}</strong><span>個人の登録姿勢</span></div><span class="pill">通知ON</span><button class="btn danger" aria-label="削除">削除</button>`;
-						row.querySelector("button").onclick = () => {
-							profile.poses = profile.poses.filter((x) => x.id !== p.id);
-							save();
-							toast("姿勢を削除しました");
-						};
-						list.append(row);
-					}
-					$("#tolerance").value = profile.tolerance;
-					$("#tolText").textContent = `${profile.tolerance}°`;
-					$("#hold").value = profile.hold;
-					$("#holdText").textContent = `${(profile.hold / 10).toFixed(1)}秒`;
-					$("#notifyVibration").checked = profile.notifyVibration !== false;
-					$("#notifySound").checked = profile.notifySound !== false;
-				}
-				function escapeHtml(s) {
-					return s.replace(
-						/[&<>"']/g,
-						(c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
-					);
-				}
-				function capture() {
-					return { ...current };
-				}
-				function matchScore(target, pose) {
-					let ds = [];
-					const base = profile.base?.features || {};
-					for (const [k, v] of Object.entries(target)) {
-						if (pose[k] === undefined) continue;
-						const isDistance = k.includes("Wrist");
-						const scale = isDistance ? 0.16 : Math.max(8, Number(profile.tolerance));
-						const changed =
-							base[k] === undefined ||
-							Math.abs(v - base[k]) >
-								(isDistance ? 0.07 : Math.max(10, Number(profile.tolerance) * 0.6));
-						if (!changed) continue;
-						ds.push(Math.abs(pose[k] - v) / scale);
-					}
-					return ds.length ? ds.reduce((a, b) => a + b, 0) / ds.length : Infinity;
-				}
-				function bestMatch() {
-					if (!running || !profile.poses.length) return null;
-					let best = null,
-						score = Infinity;
-					for (const p of profile.poses) {
-						const s = matchScore(p.features, current);
-						if (s < score) {
-							best = p;
-							score = s;
-						}
-					}
-					return score < 0.68 ? best : null;
-				}
-				function evaluate() {
-					const hit = bestMatch(),
-						now = Date.now();
-					if (!hit) {
-						holdStart = 0;
-						setState("基本姿勢", "✓", false);
-						return;
-					}
-					if (!holdStart) holdStart = now;
-					if (now - holdStart >= profile.hold * 100) {
-						setState(hit.name, "!", true);
-						if (now - alertAt > 5000) {
-							alertAt = now;
-							notify(hit.name);
-						}
-					} else setState("姿勢を確認中…", "⌛", false);
-				}
-				const packetTags = { bnid: [98, 110, 105, 100], tran: [116, 114, 97, 110] };
-				function findBytes(bytes, needle, start = 0) {
-					outer: for (let i = start; i <= bytes.length - needle.length; i++) {
-						for (let j = 0; j < needle.length; j++) if (bytes[i + j] !== needle[j]) continue outer;
-						return i;
-					}
-					return -1;
-				}
-				function parseMocopiPacket(buffer) {
-					const bytes = new Uint8Array(buffer),
-						view = new DataView(buffer),
-						bones = new Map();
-					let cursor = 0;
-					while ((cursor = findBytes(bytes, packetTags.bnid, cursor)) >= 0) {
-						const idOffset = cursor + 4;
-						if (idOffset + 2 > bytes.length) break;
-						const id = view.getUint16(idOffset, true);
-						const nextBone = findBytes(bytes, packetTags.bnid, idOffset + 2);
-						const tran = findBytes(bytes, packetTags.tran, idOffset + 2);
-						cursor = idOffset + 2;
-						if (tran < 0 || (nextBone >= 0 && tran > nextBone) || tran + 32 > bytes.length)
-							continue;
-						const v = [];
-						for (let i = 0; i < 7; i++) {
-							const n = view.getFloat32(tran + 4 + i * 4, true);
-							if (!Number.isFinite(n)) {
-								v.length = 0;
-								break;
-							}
-							v.push(n);
-						}
-						if (v.length === 7)
-							bones.set(id, { q: [-v[0], v[1], -v[2], v[3]], p: [-v[4], v[5], -v[6]] });
-					}
-					if (bones.size < 12) return null;
-					const parents = {
-						1: 0,
-						2: 1,
-						3: 2,
-						4: 3,
-						5: 4,
-						6: 5,
-						7: 6,
-						8: 7,
-						9: 8,
-						10: 9,
-						11: 7,
-						12: 11,
-						13: 12,
-						14: 13,
-						15: 7,
-						16: 15,
-						17: 16,
-						18: 17,
-						19: 1,
-						20: 19,
-						21: 20,
-						22: 21,
-						23: 1,
-						24: 23,
-						25: 24,
-						26: 25,
-					};
-					const world = new Map(),
-						identity = { q: [0, 0, 0, 1], p: [0, 0, 0] };
-					const multiply = (a, b) => {
-						const [x, y, z, w] = a,
-							[X, Y, Z, W] = b;
-						return [
-							w * X + x * W + y * Z - z * Y,
-							w * Y - x * Z + y * W + z * X,
-							w * Z + x * Y - y * X + z * W,
-							w * W - x * X - y * Y - z * Z,
-						];
-					};
-					const rotate = (q, p) => {
-						const t = [
-								q[1] * p[2] - q[2] * p[1],
-								q[2] * p[0] - q[0] * p[2],
-								q[0] * p[1] - q[1] * p[0],
-							],
-							u = [q[1] * t[2] - q[2] * t[1], q[2] * t[0] - q[0] * t[2], q[0] * t[1] - q[1] * t[0]];
-						return [
-							p[0] + 2 * (q[3] * t[0] + u[0]),
-							p[1] + 2 * (q[3] * t[1] + u[1]),
-							p[2] + 2 * (q[3] * t[2] + u[2]),
-						];
-					};
-					const resolve = (id) => {
-						if (world.has(id)) return world.get(id);
-						const local = bones.get(id);
-						if (!local) return null;
-						const parentId = parents[id],
-							base = parentId === undefined ? identity : resolve(parentId);
-						if (!base) return null;
-						const pos = rotate(base.q, local.p).map((n, i) => n + base.p[i]),
-							result = { p: pos, q: multiply(base.q, local.q) };
-						world.set(id, result);
-						return result;
-					};
-					for (const id of bones.keys()) resolve(id);
-					return world;
-				}
-				function poseFeatures(pose) {
-					const p = (id) => pose.get(id)?.p || null,
-						d = (a, b) => (a && b ? Math.hypot(...a.map((v, i) => v - b[i])) : undefined),
-						angle = (a, b, c) => {
-							if (!a || !b || !c) return undefined;
-							const u = a.map((v, i) => v - b[i]),
-								v = c.map((n, i) => n - b[i]),
-								nu = Math.hypot(...u),
-								nv = Math.hypot(...v);
-							if (!nu || !nv) return undefined;
-							return (
-								(Math.acos(
-									Math.max(-1, Math.min(1, u.reduce((sum, n, i) => sum + n * v[i], 0) / (nu * nv))),
-								) *
-									180) /
-								Math.PI
-							);
-						};
-					const head = p(10),
-						neck = p(6),
-						ls = p(11),
-						le = p(13),
-						lh = p(14),
-						rs = p(15),
-						re = p(17),
-						rh = p(18),
-						hips = p(19) && p(23) ? p(19).map((n, i) => (n + p(23)[i]) / 2) : null;
-					return {
-						leftElbow: angle(ls, le, lh),
-						rightElbow: angle(rs, re, rh),
-						leftShoulder: angle(neck, ls, le),
-						rightShoulder: angle(neck, rs, re),
-						leftWristHead: d(lh, head),
-						rightWristHead: d(rh, head),
-						leftWristHip: d(lh, hips),
-						rightWristHip: d(rh, hips),
-					};
-				}
-				function setState(label, icon, isAlert) {
-					$("#stateText").textContent = label;
-					$("#stateIcon").textContent = icon;
-					$("#stateBox").classList.toggle("alert", isAlert);
-				}
-				let audioContext = null;
-				function prepareAudio() {
-					if (!profile.notifySound) return;
-					const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-					if (!AudioContextClass) return;
-					try {
-						audioContext = audioContext || new AudioContextClass();
-						if (audioContext.state === "suspended") audioContext.resume();
-					} catch {}
-				}
-				function playAlertSound() {
-					if (!profile.notifySound) return;
-					prepareAudio();
-					if (!audioContext) return;
-					try {
-						const startAt = audioContext.currentTime;
-						[0, 0.22].forEach((offset, index) => {
-							const oscillator = audioContext.createOscillator(),
-								gain = audioContext.createGain();
-							oscillator.type = "sine";
-							oscillator.frequency.value = index ? 660 : 880;
-							gain.gain.setValueAtTime(0.0001, startAt + offset);
-							gain.gain.exponentialRampToValueAtTime(0.16, startAt + offset + 0.015);
-							gain.gain.exponentialRampToValueAtTime(0.0001, startAt + offset + 0.14);
-							oscillator.connect(gain);
-							gain.connect(audioContext.destination);
-							oscillator.start(startAt + offset);
-							oscillator.stop(startAt + offset + 0.15);
-						});
-					} catch {}
-				}
-				function notifyDevice() {
-					if (profile.notifyVibration && navigator.vibrate) navigator.vibrate([180, 100, 180]);
-					playAlertSound();
-				}
-				function sendPhoneAlert(name) {
-					if (socket && socket.readyState === WebSocket.OPEN) {
-						socket.send(JSON.stringify({ type: "alert", name }));
-						return true;
-					}
-					return false;
-				}
-				function notify(name) {
-					notifyDevice();
-					sendPhoneAlert(name);
-					addLog(name);
-				}
-				function addLog(name) {
-					const log = $("#log");
-					if (log.querySelector(".small")) log.innerHTML = "";
-					const item = document.createElement("div");
-					item.className = "log-item";
-					item.innerHTML = `<span>${escapeHtml(name)}を検知</span><span>${new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>`;
-					log.prepend(item);
-					while (log.children.length > 8) log.lastElementChild.remove();
-				}
-				function setPose(name) {
-					current = { ...DEMO[name] };
-					$("#updated").textContent = "サンプルデータ";
-					document
-						.querySelectorAll(".simsel")
-						.forEach((b) => b.classList.toggle("selected", b.dataset.sim === name));
-					renderMetrics();
-					evaluate();
-				}
-				function start() {
-					if (!profile.base) {
-						toast("先に基本姿勢を登録してください");
-						return;
-					}
-					if (!profile.poses.length) {
-						toast("先に知らせたい姿勢を登録してください");
-						return;
-					}
-					prepareAudio();
-					running = true;
-					$("#startBtn").textContent = "発表モード中";
-					$("#startBtn").classList.add("primary");
-					holdStart = 0;
-					toast("発表モードを開始しました");
-					connect();
-					evaluate();
-				}
-				function stop() {
-					running = false;
-					holdStart = 0;
-					$("#startBtn").textContent = "発表モードを開始";
-					setState("待機中", "Ⅱ", false);
-					$("#connectionText").textContent = liveData ? "モコピ接続中" : "モコピ受信待ち";
-				}
-				function connect() {
-					if (
-						socket &&
-						(socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)
-					)
-						return;
-					const host = location.hostname;
-					if (!host) {
-						$("#connectionText").textContent = "PythonサーバーのURLから開いてください";
-						return;
-					}
-					try {
-						const wsUrl =
-							location.protocol === "https:"
-								? `wss://${location.host}/mocopi?role=dashboard`
-								: `ws://${host}:8765/mocopi?role=dashboard`;
-						socket = new WebSocket(wsUrl);
-						socket.binaryType = "arraybuffer";
-						socket.onopen = () => {
-							$("#connectionText").textContent = "中継に接続・モコピ待機中";
-							$("#dot").classList.add("on");
-						};
-						socket.onmessage = (e) => {
-							if (typeof e.data === "string") {
-								try {
-									const message = JSON.parse(e.data);
-									if (message.type === "alert") notifyDevice();
-								} catch {}
-								return;
-							}
-							if (!(e.data instanceof ArrayBuffer)) return;
-							const pose = parseMocopiPacket(e.data);
-							if (!pose) return;
-							const features = poseFeatures(pose);
-							if (!Number.isFinite(features.leftElbow) || !Number.isFinite(features.rightElbow))
-								return;
-							current = Object.fromEntries(
-								Object.entries(features).filter(([, v]) => Number.isFinite(v)),
-							);
-							liveData = true;
-							$("#connectionText").textContent = "モコピ接続中";
-							$("#updated").textContent = "ライブデータ";
-							renderMetrics();
-							evaluate();
-						};
-						socket.onerror = () => {};
-						socket.onclose = () => {
-							if (socket && socket.readyState === WebSocket.CLOSED) socket = null;
-							$("#connectionText").textContent = "中継未接続";
-							$("#dot").classList.remove("on");
-							if (location.hostname) setTimeout(connect, 2500);
-						};
-					} catch {}
-				}
-				$("#baseCapture").onclick = () => {
-					if (!liveData) {
-						toast("モコピのライブデータを受信してから登録してください");
-						return;
-					}
-					profile.base = { features: capture(), savedAt: Date.now() };
-					save();
-					toast("基本姿勢を登録しました");
-				};
-				$("#addPose").onclick = () => {
-					if (!liveData) {
-						toast("モコピのライブデータを受信してから登録してください");
-						return;
-					}
-					const name = $("#poseName").value.trim();
-					if (!name) {
-						toast("姿勢の名前を入力してください");
-						$("#poseName").focus();
-						return;
-					}
-					profile.poses.push({
-						id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-						name,
-						features: capture(),
-					});
-					$("#poseName").value = "";
-					save();
-					toast(`${name}を登録しました`);
-				};
-				$("#startBtn").onclick = start;
-				$("#stopBtn").onclick = stop;
-				$("#vibeBtn").onclick = () => {
-					prepareAudio();
-					notifyDevice();
-					sendPhoneAlert("振動テスト");
-					toast("選択中の通知方法をテストしました");
-				};
-				$("#notifyVibration").checked = profile.notifyVibration !== false;
-				$("#notifySound").checked = profile.notifySound !== false;
-				$("#notifyVibration").onchange = (e) => {
-					profile.notifyVibration = e.target.checked;
-					save();
-				};
-				$("#notifySound").onchange = (e) => {
-					profile.notifySound = e.target.checked;
-					save();
-					prepareAudio();
-				};
-				document
-					.querySelectorAll(".simsel")
-					.forEach((b) => (b.onclick = () => setPose(b.dataset.sim)));
-				$("#tolerance").oninput = (e) => {
-					profile.tolerance = Number(e.target.value);
-					$("#tolText").textContent = `${profile.tolerance}°`;
-					save();
-				};
-				$("#hold").oninput = (e) => {
-					profile.hold = Number(e.target.value);
-					$("#holdText").textContent = `${(profile.hold / 10).toFixed(1)}秒`;
-					save();
-				};
-				$("#clearBtn").onclick = () => {
-					if (confirm("この端末の姿勢登録をすべて消去しますか？")) {
-						profile = {
-							base: null,
-							poses: [],
-							tolerance: 20,
-							hold: 8,
-							notifyVibration: true,
-							notifySound: true,
-						};
-						save();
-						toast("登録を消去しました");
-					}
-				};
-				async function updatePhoneStatus() {
-					try {
-						const response = await fetch("/health", { cache: "no-store" });
-						const data = await response.json();
-						$("#phoneStatus").textContent =
-							`同じWebアプリを開いている画面：${Number(data.dashboardClients) || 0}`;
-						const links = $("#phoneUrl");
-						links.replaceChildren();
-						(data.phoneUrls || []).forEach((url, index) => {
-							if (index) links.append("　");
-							const a = document.createElement("a");
-							a.href = url;
-							a.textContent = url;
-							a.style.color = "var(--green)";
-							a.style.wordBreak = "break-all";
-							links.append(a);
-						});
-					} catch {
-						$("#phoneStatus").textContent = "接続状態を取得できません";
-					}
-				}
-				renderProfile();
-				renderMetrics();
-				connect();
-				updatePhoneStatus();
-				syncProfileFromServer();
-				setInterval(updatePhoneStatus, 3000);
-				setInterval(syncProfileFromServer, 3000);
-			})();
-		</script>
-	</body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eceff2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap">
+<title>姿勢サポート | mocopi</title>
+<style>
+  :root{--ink:#1b2433;--muted:#667085;--line:#d5dae1;--line-strong:#b6bdc8;--bg:#eceff2;--paper:#fbfcfd;--accent:#243b6b;--warn:#c03a3a;--ready:#1f6b5a;--wait:#2c3750;--setup:#8d6a24;--check:#9b5636}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 "Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;-webkit-font-smoothing:antialiased}
+  button,input,select{font:inherit}button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .shell{max-width:1200px;margin:auto;padding:28px 36px 72px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:18px;margin-bottom:36px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline}.brand b,.brand span{display:inline}.brand b{font-size:18px;font-weight:700;letter-spacing:.06em}.brand span{margin-left:14px;color:var(--muted);font-size:13px}
+  .connection-strip{display:flex;align-items:center;gap:10px;margin:0;padding:0}
+  .connection-strip .label{font-size:13px;color:var(--muted)}.connection-strip strong{font-size:14px;font-weight:500}.connection-hint{display:none}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--line-strong);flex:none}.dot.on{background:var(--ready)}.dot.waiting{background:#c58b2a}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:48px;align-items:start}
+  .measure-panel{min-width:0}.setup-panel{min-width:0;background:var(--paper);border-radius:22px;padding:28px 28px 24px}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:18px}
+  .section-head h1{font-size:28px;line-height:1.3;margin:0;font-weight:700;letter-spacing:.04em}
+  .section-head h2,.setup-panel h2{font-size:20px;margin:0;font-weight:700;letter-spacing:.04em}
+  .kicker{display:none}
+  .small{font-size:13.5px;color:var(--muted);line-height:1.7}
+  .state{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:168px;padding:28px 32px;border-radius:22px;background:var(--wait);color:#fff;transition:background .4s}
+  .state.is-ready{background:var(--ready)}.state.is-setup{background:var(--setup)}.state.is-checking{background:var(--check)}.state.alert{background:var(--warn);animation:ring 1.4s ease-out 2}
+  .state .label{font-size:13px;color:rgba(255,255,255,.72)}
+  .state strong{display:block;margin-top:4px;font-size:clamp(30px,4.6vw,52px);line-height:1.15;font-weight:700;letter-spacing:.03em}
+  .state-icon{flex:none;width:56px;height:56px;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.5);border-radius:50%;font-size:22px;color:#fff}
+  @keyframes ring{from{box-shadow:0 0 0 0 rgba(192,58,58,.45)}to{box-shadow:0 0 0 24px rgba(192,58,58,0)}}
+  .next-action{margin:18px 2px 0;font-size:15px}
+  .control{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:20px 0 44px}.control .next-action{flex:1;margin:0}.actions{display:flex;gap:10px;flex:none}
+  .btn{min-height:44px;padding:9px 22px;border:1px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font-weight:500;font-size:15px;transition:background .15s,color .15s,border-color .15s}
+  .btn:hover{background:var(--ink);color:var(--paper)}.btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--ink);color:#fff}.btn.primary:hover{background:var(--accent);border-color:var(--accent)}
+  .btn.danger{color:var(--warn);border-color:#e0b4b4}.btn.danger:hover{background:var(--warn);border-color:var(--warn);color:#fff}
+  .btn:disabled{cursor:not-allowed;opacity:.38;pointer-events:none}
+  .subheading{font-size:15px;font-weight:700;margin:0 0 4px}
+  .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:12px}
+  .metric{min-width:0;padding:14px 0 18px;border-top:1px solid var(--line)}
+  .metric .top{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+  .metric strong{display:block;margin-top:2px;font-size:36px;line-height:1.2;font-weight:300;font-variant-numeric:tabular-nums}
+  .metric .delta{display:block;margin-top:2px;font-size:13px;color:var(--muted)}.metric .delta.changed{color:var(--warn);font-weight:500}
+  .empty-metrics{padding:16px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px;grid-column:1/-1}
+  .setup-step{padding:22px 0;border-bottom:1px solid var(--line)}.setup-step:first-of-type{padding-top:6px}
+  .step-heading{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
+  .step-num{flex:none;font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  .section-title{margin:0;font-size:15px;font-weight:700}
+  .step-status{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}.step-status.ready{color:var(--ready);font-weight:500}.step-status.pending{color:var(--setup);font-weight:500}
+  .form-row{display:flex;gap:8px}
+  .form-row input,.form-select{min-width:0;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink)}
+  .form-row input{flex:1}.form-select{width:100%}
+  .form-row input:focus,.form-select:focus{border-color:var(--accent);outline:2px solid #243b6b33}
+  .mode-help{margin-top:8px}.section{margin-top:14px}
+  .pose-list{display:grid}.pose-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+  .pose-info{min-width:0;flex:1}.pose-info strong{font-size:15px;font-weight:500}.pose-info span{display:block;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+  .range{width:100%;accent-color:var(--ink);min-height:28px}.range-label{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:14px}.range-label b{font-weight:700;font-variant-numeric:tabular-nums}
+  .notify-options{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:0;padding:18px 0;border-bottom:1px solid var(--line)}
+  .notify-options label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.notify-options input{width:18px;height:18px;accent-color:var(--ink)}
+  .notify-options .btn{margin-left:auto;min-height:38px;padding:6px 18px;font-size:14px}
+  .profile{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:20px}.profile b{font-size:14px;font-weight:700}.profile span{font-size:13px;color:var(--muted)}
+  .log-section{margin-top:56px;padding-top:24px;border-top:1px solid var(--line)}.log-section h2{margin:0;font-size:18px;font-weight:700}
+  .log{display:grid;max-height:180px;overflow:auto}.log-item{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.log-item span:last-child{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+  details{margin-top:28px;padding:14px 0;border-top:1px solid var(--line)}summary{cursor:pointer;font-size:14px;font-weight:500}
+  .diag-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.diag-box{padding:8px 0;border-bottom:1px solid var(--line);min-width:0}.diag-box b{display:block;font-size:14px}.diag-box span{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+  .diag-table-wrap{overflow:auto;margin-top:12px}.diag-table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}.diag-table th,.diag-table td{text-align:left;padding:7px;border-bottom:1px solid var(--line)}.diag-table th{color:var(--muted);font-weight:500}.diag-table tr.inactive td:last-child{color:var(--muted)}.diag-ok{color:var(--ready)}.diag-warn{color:var(--warn)}
+  .sim{margin-top:18px;padding-top:12px;border-top:1px solid var(--line)}.sim-buttons{display:flex;gap:8px;flex-wrap:wrap}
+  .btn.simsel{min-height:36px;padding:5px 14px;font-size:14px}.btn.simsel.selected{background:var(--ink);color:#fff}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);opacity:0;background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media(prefers-reduced-motion:reduce){.state.alert{animation:none}*{transition:none!important}}
+  @media(max-width:860px){.shell{padding:20px 20px 48px}.layout{grid-template-columns:1fr;gap:40px}.setup-panel{padding:24px 20px}.connection-hint{display:none}.brand span{display:none}}
+  @media(max-width:600px){.control{flex-direction:column;align-items:stretch;gap:16px}}
+  @media(max-width:480px){.setup-panel{padding:20px 16px}.shell{padding:16px 16px 40px}.connection-strip{margin-bottom:24px}.state{min-height:140px;padding:22px}.state-icon{width:44px;height:44px;font-size:18px}.section-head h1{font-size:24px}.metrics{grid-template-columns:1fr 1fr;column-gap:16px}.metric strong{font-size:30px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions .primary{grid-column:1/-1}.form-row{flex-direction:column}.form-row .btn{width:100%}.diag-grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div class="brand"><div><b>mocopi 姿勢サポート</b><span>姿勢の記録と通知</span></div></div>
+  <section class="connection-strip" aria-live="polite"><span class="dot" id="dot"></span><span class="label">Pythonサーバー</span><strong id="connectionText">接続を確認しています</strong><span class="connection-hint">サーバー接続後、mocopiの受信状態を表示します。</span></section>
+  </header>
+  <div class="layout">
+    <section class="measure-panel" aria-labelledby="measureTitle">
+      <div class="section-head"><div><span class="kicker">計測</span><h1 id="measureTitle">現在の姿勢</h1></div><span class="small" id="updated">実測データなし</span></div>
+      <div class="state" id="stateBox" aria-live="polite"><div><div class="label">状態</div><strong id="stateText">接続を確認しています</strong></div><div class="state-icon" id="stateIcon" aria-hidden="true">—</div></div>
+      <div class="control"><p class="next-action" id="nextAction">Pythonサーバーとmocopiの接続を確認しています。</p>
+      <div class="actions"><button class="btn primary" id="startBtn">計測を始める</button><button class="btn" id="stopBtn">計測を止める</button></div></div>
+      <h2 class="subheading">現在の計測値</h2><p class="small" style="margin:0 0 8px">登録した基本姿勢との差を表示します。</p><div class="metrics" id="metrics"></div>
+      <section class="log-section"><div class="section-head"><h2>通知履歴</h2><span class="small">この画面を開いてからの検知</span></div><div class="log" id="log"><div class="small">通知はまだありません</div></div></section>
+      <details class="diagnostics"><summary>受信データと判定の根拠</summary><div class="small" style="margin-top:8px">mocopiのUDP骨格データをPythonサーバーがWebSocket中継し、この画面で骨格点・角度・距離を計算します。</div><div class="diag-grid"><div class="diag-box"><b>受信状態</b><span id="diagReceive">データ待ち</span></div><div class="diag-box"><b>判定候補</b><span id="diagCandidate">登録姿勢を待っています</span></div></div><div class="small" style="margin-top:12px"><b>判定に使う骨格点（mocopi骨格ID）</b></div><div id="jointReadout" class="small" style="margin-top:5px">まだ骨格データがありません</div><div class="diag-table-wrap"><table class="diag-table"><thead><tr><th>特徴量</th><th>現在</th><th>通常姿勢</th><th>通知姿勢</th><th>判定対象</th></tr></thead><tbody id="decisionRows"><tr><td colspan="5" class="small">計測を始めると比較内容を表示します</td></tr></tbody></table></div><div class="small" style="margin-top:8px">通常姿勢との差が一定以上ある特徴量だけで通知姿勢との近さを計算します。平均スコアが0.68未満の状態が設定時間続くと検知します。</div>
+        <div class="sim"><div class="section-title">サンプル値で画面を確認</div><p class="small">以下は実測値ではなく、表示確認用の値です。</p><div class="sim-buttons"><button class="btn simsel selected" data-sim="base">基本姿勢</button><button class="btn simsel" data-sim="face">顔に手を近づける</button><button class="btn simsel" data-sim="waist">腰に手を当てる</button></div></div>
+      </details>
+    </section>
+    <aside class="setup-panel" aria-labelledby="setupTitle">
+      <div class="section-head"><div><span class="kicker">準備</span><h2 id="setupTitle">計測の設定</h2></div><span class="small" id="count">0件</span></div>
+      <div class="setup-step"><div class="step-heading"><span class="step-num">1</span><h3 class="section-title">装着モード</h3><span class="step-status" id="modeStatus">確認</span></div><select class="form-select" id="trackingMode"><option value="standard">標準（頭・手首・腰・足首）</option><option value="upperBody">上半身フォーカス（足首センサーを二の腕へ）</option></select><div class="small mode-help" id="modeHelp"></div></div>
+      <div class="setup-step"><div class="step-heading"><span class="step-num">2</span><h3 class="section-title">基本姿勢を登録</h3><span class="step-status" id="baseStatus">未登録</span></div><p class="small">普段の姿勢で立ち、mocopiの実測値を受信してから登録します。</p><div class="pose-row" id="baseRow"><div class="pose-info"><strong>未登録</strong><span>基本姿勢を登録してください</span></div><button class="btn" id="baseCapture">現在の姿勢を登録</button></div></div>
+      <div class="setup-step"><div class="step-heading"><span class="step-num">3</span><h3 class="section-title">知らせる姿勢を登録</h3><span class="step-status" id="poseStatus">0件</span></div><div class="pose-list" id="poseList"></div><div class="section"><div class="form-row"><input id="poseName" maxlength="24" placeholder="姿勢名（例：顔に手を近づける）"><button class="btn primary" id="addPose">現在の姿勢を登録</button></div><div class="small" style="margin-top:7px">登録したい動きをしてから押してください。</div></div></div>
+      <div class="setup-step"><div class="step-heading"><span class="step-num">4</span><h3 class="section-title">判定の調整</h3></div><label class="range-label" for="tolerance"><span>角度の許容差</span><b id="tolText">20°</b></label><input class="range" id="tolerance" type="range" min="8" max="40" value="20"><label class="range-label" for="hold"><span>通知までの継続時間</span><b id="holdText">0.8秒</b></label><input class="range" id="hold" type="range" min="3" max="20" value="8"></div>
+      <div class="notify-options" aria-label="通知設定"><label><input id="notifyVibration" type="checkbox" checked>振動</label><label><input id="notifySound" type="checkbox" checked>音</label><button class="btn" id="vibeBtnSide" type="button">通知を試す</button></div>
+      <div class="profile"><div><b>プロフィール同期</b><br><span id="profileSyncStatus">このサーバーと同期</span></div><button class="btn danger" id="clearBtn">登録を消去</button></div>
+    </aside>
+  </div>
+</main><div class="toast" id="toast"></div>
+<script>
+(() => {
+  const FEATURE_NAMES={leftElbow:'左ひじ角度',rightElbow:'右ひじ角度',leftShoulder:'左肩角度',rightShoulder:'右肩角度',leftWristHead:'左手首〜頭',rightWristHead:'右手首〜頭',leftWristHip:'左手首〜腰',rightWristHip:'右手首〜腰'};
+  const FEATURE_COLORS={leftElbow:'var(--sensor-cyan)',rightElbow:'var(--sensor-cyan)',leftShoulder:'var(--sensor-purple)',rightShoulder:'var(--sensor-purple)',leftWristHead:'var(--sensor-coral)',rightWristHead:'var(--sensor-coral)',leftWristHip:'var(--sensor-rose)',rightWristHip:'var(--sensor-rose)'};
+  const BONE_NAMES={6:'胴体上部',10:'頭',11:'左肩',12:'左上腕',13:'左前腕',14:'左手',15:'右肩',16:'右上腕',17:'右前腕',18:'右手',19:'左脚付け根',23:'右脚付け根'};
+  const DEMO={base:{leftElbow:155,rightElbow:158,leftShoulder:18,rightShoulder:20,leftWristHead:0.62,rightWristHead:0.64,leftWristHip:0.48,rightWristHip:0.49},face:{leftElbow:55,rightElbow:158,leftShoulder:62,rightShoulder:20,leftWristHead:0.08,rightWristHead:0.64,leftWristHip:0.45,rightWristHip:0.50},waist:{leftElbow:78,rightElbow:158,leftShoulder:42,rightShoulder:20,leftWristHead:0.48,rightWristHead:0.64,leftWristHip:0.08,rightWristHip:0.49}};
+  const $=s=>document.querySelector(s); const storeKey='mocopiPostureProfileV1';
+  let profile=read(), current={}, running=false, presenterActive=false, socket=null, alertAt=0, holdStart=0, timer=null, liveData=false, lastPoseWorld=new Map(), lastBoneCount=0, lastPacketAt=0, profileRevision=0, profileEdited=false, profileSyncTimer=null;
+  function read(){try{const saved=JSON.parse(localStorage.getItem(storeKey))||{};return {base:null,poses:[],tolerance:20,hold:8,notifyVibration:true,notifySound:true,mocopiMode:'upperBody',...saved}}catch{return{base:null,poses:[],tolerance:20,hold:8,notifyVibration:true,notifySound:true,mocopiMode:'upperBody'}}}
+  function save(){localStorage.setItem(storeKey,JSON.stringify(profile));renderProfile();profileEdited=true;clearTimeout(profileSyncTimer);profileSyncTimer=setTimeout(syncProfileToServer,300)}
+  async function syncProfileToServer(){try{$('#profileSyncStatus').textContent='サーバーへ保存中…';const response=await fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile})});if(!response.ok)throw new Error('save failed');const result=await response.json();profileRevision=result.revision;profileEdited=false;$('#profileSyncStatus').textContent='PC・スマホ間で同期済み'}catch{$('#profileSyncStatus').textContent='端末内に保存済み・サーバー未接続'}}
+  async function syncProfileFromServer(){try{const response=await fetch('/api/profile',{cache:'no-store'});if(!response.ok)return;const remote=await response.json();const revision=Number(remote.revision)||0;if(revision>profileRevision){if(profileEdited){syncProfileToServer();return}if(remote.profile){profile=remote.profile;profileRevision=revision;localStorage.setItem(storeKey,JSON.stringify(profile));renderProfile();evaluate()} }else if(!revision&&!profileEdited&&(profile.base||profile.poses.length)){profileEdited=true;syncProfileToServer()}}catch{$('#profileSyncStatus').textContent='端末内に保存済み・サーバー未接続'}}
+  function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}
+  function round(n,d=0){return Number(n).toFixed(d)}
+  function renderMetrics(){const el=$('#metrics');el.replaceChildren();const available=Object.entries(FEATURE_NAMES).filter(([key])=>Number.isFinite(current[key]));if(!available.length){const empty=document.createElement('div');empty.className='empty-metrics';empty.textContent='mocopiの実測データを待っています。接続後、ひじ・肩の角度と手から頭・腰までの距離を表示します。';el.append(empty);return}for(const [key,label] of available){const v=current[key],isDist=key.includes('Wrist'),unit=isDist?'m':'°',digits=isDist?2:0,baseValue=profile.base?.features?.[key],box=document.createElement('div');box.className='metric';box.style.setProperty('--metric-accent',FEATURE_COLORS[key]);const top=document.createElement('div');top.className='top';const title=document.createElement('span');title.textContent=label;const unitEl=document.createElement('span');unitEl.textContent=unit;top.append(title,unitEl);const value=document.createElement('strong');value.textContent=round(v,digits);box.append(top,value);if(Number.isFinite(baseValue)){const delta=v-baseValue,deltaEl=document.createElement('span');deltaEl.className='delta';deltaEl.textContent=`基本姿勢から ${delta>=0?'+':''}${round(delta,digits)}${unit}`;if(Math.abs(delta)>=(isDist?0.07:Math.max(10,Number(profile.tolerance)*0.6)))deltaEl.classList.add('changed');box.append(deltaEl)}el.append(box)}}
+  function modeLabel(mode){return mode==='upperBody'?'上半身フォーカス':'標準'}
+  function renderProfile(){profile.mocopiMode=profile.mocopiMode||'upperBody';const base=$('#baseRow');if(profile.base){const savedMode=profile.base.mocopiMode||'standard',modeMismatch=savedMode!==profile.mocopiMode;base.querySelector('.pose-info').innerHTML=`<strong>登録済み</strong><span>${modeMismatch?'装着モード変更後に再登録が必要':`${modeLabel(savedMode)}・${new Date(profile.base.savedAt).toLocaleString('ja-JP',{hour:'2-digit',minute:'2-digit'})} に登録`}</span>`;$('#baseCapture').textContent='再登録'}else{base.querySelector('.pose-info').innerHTML='<strong>未登録</strong><span>基本姿勢を登録してください</span>';$('#baseCapture').textContent='登録'}
+    $('#count').textContent=`${profile.poses.length}件`;const list=$('#poseList');list.innerHTML='';if(!profile.poses.length)list.innerHTML='<div class="small">通知姿勢は未登録です</div>';for(const p of profile.poses){const row=document.createElement('div');row.className='pose-row';const savedMode=p.mocopiMode||'standard';row.innerHTML=`<div class="pose-info"><strong>${escapeHtml(p.name)}</strong><span>${savedMode===profile.mocopiMode?`${modeLabel(savedMode)}・登録済み`:'モード変更後に再登録が必要'}</span></div><button class="btn danger" aria-label="${escapeHtml(p.name)}を削除">削除</button>`;row.querySelector('button').onclick=()=>{profile.poses=profile.poses.filter(x=>x.id!==p.id);save();toast('姿勢を削除しました')};list.append(row)}
+    $('#trackingMode').value=profile.mocopiMode;$('#modeHelp').textContent=profile.mocopiMode==='upperBody'?'この選択はmocopiアプリを自動変更しません。mocopi側でも「上半身フォーカス」を選び、頭・手首・腰に加えてANKLEセンサーを左右の二の腕へ装着し、再キャリブレーションしてください。':'mocopiアプリの標準モード用です。装着モードを変更したら、基本姿勢と通知姿勢を登録し直します。';
+    $('#tolerance').value=profile.tolerance;$('#tolText').textContent=`${profile.tolerance}°`;$('#hold').value=profile.hold;$('#holdText').textContent=`${(profile.hold/10).toFixed(1)}秒`;$('#notifyVibration').checked=profile.notifyVibration!==false;$('#notifySound').checked=profile.notifySound!==false;renderDiagnostics();renderReadiness();
+  }
+  function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function hasFreshLiveData(){return liveData&&Date.now()-lastPacketAt<2500}
+  function renderReadiness(){const fresh=hasFreshLiveData(),modeOk=profile.base&&(profile.base.mocopiMode||'standard')===profile.mocopiMode&&profile.poses.every(p=>(p.mocopiMode||'standard')===profile.mocopiMode),serverOpen=socket?.readyState===WebSocket.OPEN,strip=$('.connection-strip'),dot=$('#dot');dot.classList.toggle('on',serverOpen&&fresh);dot.classList.toggle('waiting',serverOpen&&!fresh);strip.classList.toggle('connected',fresh);strip.classList.toggle('waiting',!fresh&&serverOpen);$('#connectionText').textContent=fresh?'骨格データ受信中':serverOpen?'サーバー接続済み・mocopi受信待ち':location.hostname?'サーバー未接続':'PythonサーバーのURLから開いてください';$('#modeStatus').textContent=profile.mocopiMode==='upperBody'?'上半身フォーカス':'標準モード';$('#modeStatus').className='step-status ready';$('#baseStatus').textContent=profile.base?(profile.base.mocopiMode||'standard')===profile.mocopiMode?'登録済み':'再登録が必要':'未登録';$('#baseStatus').className=`step-status ${profile.base&&((profile.base.mocopiMode||'standard')===profile.mocopiMode)?'ready':'pending'}`;$('#poseStatus').textContent=profile.poses.length?`${profile.poses.length}件登録`:'未登録';$('#poseStatus').className=`step-status ${profile.poses.length?'ready':'pending'}`;$('#baseCapture').disabled=!fresh;$('#addPose').disabled=!fresh;const canStart=fresh&&modeOk&&profile.poses.length>0;$('#startBtn').disabled=!canStart||running;$('#stopBtn').disabled=!running;$('#startBtn').textContent=running?'計測中':'計測を始める';if(running)return;let label,hint,icon;if(!fresh){label='モコピ受信待ち';hint=serverOpen?'mocopiから実測データが届くと、姿勢を登録できます。':'Pythonサーバーを起動し、この画面をサーバーのURLで開いてください。';icon='…'}else if(!profile.base||!modeOk){label='基本姿勢を登録';hint='基本姿勢をとり、「現在の姿勢を登録」を押してください。装着モードを変更した場合は再登録が必要です。';icon='1'}else if(!profile.poses.length){label='通知姿勢を登録';hint='知らせたい姿勢をとり、名前を入力して登録してください。';icon='2'}else{label='準備完了';hint='登録した姿勢を確認したら「計測を始める」を押してください。';icon='✓'}setState(label,icon,false,hint)}
+  function renderDiagnostics(candidate=null){const age=lastPacketAt?Math.max(0,Date.now()-lastPacketAt):null;$('#diagReceive').textContent=liveData?`${lastBoneCount}骨格点 / 最終受信 ${age}ms前 / ${modeLabel(profile.mocopiMode)}`:'mocopiのUDPフレームを待っています';const jointLines=Object.entries(BONE_NAMES).map(([id,label])=>{const pos=lastPoseWorld.get(Number(id))?.p;return `${id} ${label}: ${pos?pos.map(v=>Number(v).toFixed(3)).join(', '):'未受信'}`});$('#jointReadout').textContent=jointLines.join('　｜　');const body=$('#decisionRows');body.replaceChildren();if(!running){$('#diagCandidate').textContent='発表モード停止中';body.innerHTML='<tr><td colspan="5" class="small">発表モードを開始すると、登録値との比較結果が表示されます。</td></tr>';return}if(!candidate){candidate=bestMatch()}if(!candidate){const mismatch=profile.base&&(profile.base.mocopiMode||'standard')!==profile.mocopiMode;$('#diagCandidate').textContent=mismatch?'装着モード変更後の再登録が必要':'通知姿勢を登録してください';body.innerHTML=`<tr><td colspan="5" class="small">${mismatch?'モードを合わせて基本姿勢と通知姿勢を登録し直してください。':'比較対象がありません。'}</td></tr>`;return}const matched=candidate.score<0.68;$('#diagCandidate').textContent=`${candidate.pose.name} / 平均スコア ${Number.isFinite(candidate.score)?candidate.score.toFixed(2):'対象なし'}（0.68未満で一致）${matched?'・一致候補':''}`;for(const row of candidate.rows){const tr=document.createElement('tr');if(!row.changed)tr.className='inactive';const unit=row.key.includes('Wrist')?'m':'°',digits=unit==='m'?3:1;const cellValues=[FEATURE_NAMES[row.key],`${row.current.toFixed(digits)}${unit}`,Number.isFinite(row.base)?`${row.base.toFixed(digits)}${unit}`:'—',`${row.target.toFixed(digits)}${unit}`,row.changed?'使用':'通常姿勢と差が小さい'];for(const [i,value] of cellValues.entries()){const td=document.createElement('td');td.textContent=value;if(i===4&&row.changed)td.className='diag-ok';tr.append(td)}body.append(tr)}if(!candidate.rows.length)body.innerHTML='<tr><td colspan="5" class="small">現在値と登録値で共通する特徴量がありません。</td></tr>'}
+  function capture(){return {...current}}
+  function comparePose(target,pose){const base=profile.base?.features||{},rows=[],scores=[];for(const [key,targetValue] of Object.entries(target)){if(pose[key]===undefined)continue;const isDistance=key.includes('Wrist'),scale=isDistance?0.16:Math.max(8,Number(profile.tolerance)),changeLimit=isDistance?0.07:Math.max(10,Number(profile.tolerance)*0.6),baseValue=base[key],changed=baseValue===undefined||Math.abs(targetValue-baseValue)>changeLimit,diff=Math.abs(pose[key]-targetValue);if(changed)scores.push(diff/scale);rows.push({key,current:pose[key],base:baseValue,target:targetValue,changed})}return {score:scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:Infinity,rows}}
+  function bestMatch(){if(!running||!profile.poses.length||!profile.base||(profile.base.mocopiMode||'standard')!==profile.mocopiMode)return null;let best=null;for(const item of profile.poses){if((item.mocopiMode||'standard')!==profile.mocopiMode)continue;const result=comparePose(item.features,current);if(!best||result.score<best.score)best={pose:item,...result}}return best}
+  function evaluate(){const candidate=bestMatch(),now=Date.now();renderDiagnostics(candidate);if(!hasFreshLiveData()){holdStart=0;if(!running)renderReadiness();else setState('モコピ受信待ち','…',false,'ライブデータが届いていません。センサーとUDP送信の接続を確認してください。');return}if(!running){renderReadiness();return}if(!candidate||candidate.score>=0.68){holdStart=0;setState('登録した姿勢を未検知','✓',false,'登録した通知姿勢との一致は検出されていません。');return}if(!holdStart)holdStart=now;if(now-holdStart>=profile.hold*100){setState(candidate.pose.name,'!',true,`登録した「${candidate.pose.name}」に近い姿勢です。基本姿勢に戻してください。`);if(now-alertAt>5000){alertAt=now;notify(candidate.pose.name)}}else setState('姿勢を確認中','…',false,`「${candidate.pose.name}」に近い動きを確認しています。`)}
+  const packetTags={bnid:[98,110,105,100],tran:[116,114,97,110]};
+  function findBytes(bytes,needle,start=0){outer:for(let i=start;i<=bytes.length-needle.length;i++){for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;return i}return -1}
+  function parseMocopiPacket(buffer){
+    const bytes=new Uint8Array(buffer),view=new DataView(buffer),bones=new Map();let cursor=0;
+    while((cursor=findBytes(bytes,packetTags.bnid,cursor))>=0){const idOffset=cursor+4;if(idOffset+2>bytes.length)break;const id=view.getUint16(idOffset,true);const nextBone=findBytes(bytes,packetTags.bnid,idOffset+2);const tran=findBytes(bytes,packetTags.tran,idOffset+2);cursor=idOffset+2;if(tran<0||(nextBone>=0&&tran>nextBone)||tran+32>bytes.length)continue;const v=[];for(let i=0;i<7;i++){const n=view.getFloat32(tran+4+i*4,true);if(!Number.isFinite(n)){v.length=0;break}v.push(n)}if(v.length===7)bones.set(id,{q:[-v[0],v[1],-v[2],v[3]],p:[-v[4],v[5],-v[6]]})}
+    if(bones.size<12)return null;
+    const parents={1:0,2:1,3:2,4:3,5:4,6:5,7:6,8:7,9:8,10:9,11:7,12:11,13:12,14:13,15:7,16:15,17:16,18:17,19:1,20:19,21:20,22:21,23:1,24:23,25:24,26:25};
+    const world=new Map(),identity={q:[0,0,0,1],p:[0,0,0]};
+    const multiply=(a,b)=>{const [x,y,z,w]=a,[X,Y,Z,W]=b;return [w*X+x*W+y*Z-z*Y,w*Y-x*Z+y*W+z*X,w*Z+x*Y-y*X+z*W,w*W-x*X-y*Y-z*Z]};
+    const rotate=(q,p)=>{const t=[q[1]*p[2]-q[2]*p[1],q[2]*p[0]-q[0]*p[2],q[0]*p[1]-q[1]*p[0]],u=[q[1]*t[2]-q[2]*t[1],q[2]*t[0]-q[0]*t[2],q[0]*t[1]-q[1]*t[0]];return [p[0]+2*(q[3]*t[0]+u[0]),p[1]+2*(q[3]*t[1]+u[1]),p[2]+2*(q[3]*t[2]+u[2])]};
+    const resolve=id=>{if(world.has(id))return world.get(id);const local=bones.get(id);if(!local)return null;const parentId=parents[id],base=parentId===undefined?identity:resolve(parentId);if(!base)return null;const pos=rotate(base.q,local.p).map((n,i)=>n+base.p[i]),result={p:pos,q:multiply(base.q,local.q)};world.set(id,result);return result};
+    for(const id of bones.keys())resolve(id);return world;
+  }
+  function poseFeatures(pose){const p=id=>pose.get(id)?.p||null,d=(a,b)=>a&&b?Math.hypot(...a.map((v,i)=>v-b[i])):undefined,angle=(a,b,c)=>{if(!a||!b||!c)return undefined;const u=a.map((v,i)=>v-b[i]),v=c.map((n,i)=>n-b[i]),nu=Math.hypot(...u),nv=Math.hypot(...v);if(!nu||!nv)return undefined;return Math.acos(Math.max(-1,Math.min(1,u.reduce((sum,n,i)=>sum+n*v[i],0)/(nu*nv))))*180/Math.PI};const head=p(10),neck=p(6),ls=p(11),lu=p(12),ll=p(13),lh=p(14),rs=p(15),ru=p(16),rl=p(17),rh=p(18),hips=p(19)&&p(23)?p(19).map((n,i)=>(n+p(23)[i])/2):null;return {leftElbow:angle(lu,ll,lh),rightElbow:angle(ru,rl,rh),leftShoulder:angle(neck,ls,lu),rightShoulder:angle(neck,rs,ru),leftWristHead:d(lh,head),rightWristHead:d(rh,head),leftWristHip:d(lh,hips),rightWristHip:d(rh,hips)}}
+  function setState(label,icon,isAlert,hint=''){const box=$('#stateBox');$('#stateText').textContent=label;$('#stateIcon').textContent=icon;box.classList.remove('is-ready','is-setup','is-checking','is-waiting');box.classList.toggle('alert',isAlert);if(!isAlert){if(label==='準備完了'||label==='登録した姿勢を未検知')box.classList.add('is-ready');else if(label.includes('登録'))box.classList.add('is-setup');else if(label.includes('確認中'))box.classList.add('is-checking');else box.classList.add('is-waiting')}if(hint)$('#nextAction').textContent=hint}
+  let audioContext=null;
+  function prepareAudio(){if(!profile.notifySound)return;const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass)return;try{audioContext=audioContext||new AudioContextClass();if(audioContext.state==='suspended')audioContext.resume()}catch{}}
+  function playAlertSound(){if(!profile.notifySound)return;prepareAudio();if(!audioContext)return;try{const startAt=audioContext.currentTime;[0,0.22].forEach((offset,index)=>{const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();oscillator.type='sine';oscillator.frequency.value=index?660:880;gain.gain.setValueAtTime(0.0001,startAt+offset);gain.gain.exponentialRampToValueAtTime(0.16,startAt+offset+0.015);gain.gain.exponentialRampToValueAtTime(0.0001,startAt+offset+0.14);oscillator.connect(gain);gain.connect(audioContext.destination);oscillator.start(startAt+offset);oscillator.stop(startAt+offset+0.15)})}catch{}}
+  function notifyDevice(){if(profile.notifyVibration&&navigator.vibrate)navigator.vibrate([180,100,180]);playAlertSound()}
+  function sendPresentationState(active){if(socket&&socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({type:'presentation',active:!!active}))}
+  function sendPhoneAlert(name){if(socket&&socket.readyState===WebSocket.OPEN){socket.send(JSON.stringify({type:'alert',name}));return true}return false}
+  function notify(name){notifyDevice();sendPhoneAlert(name);addLog(name);}
+  function addLog(name){const log=$('#log');if(log.querySelector('.small'))log.innerHTML='';const item=document.createElement('div');item.className='log-item';item.innerHTML=`<span>${escapeHtml(name)}を検知</span><span>${new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span>`;log.prepend(item);while(log.children.length>8)log.lastElementChild.remove()}
+  function setPose(name){current={...DEMO[name]};$('#updated').textContent='画面確認用サンプル値（実測ではありません）';document.querySelectorAll('.simsel').forEach(b=>b.classList.toggle('selected',b.dataset.sim===name));renderMetrics()}
+  function start(){if(!hasFreshLiveData()){toast('先にmocopiの実測データを受信してください');return}if(!profile.base){toast('先に基本姿勢を登録してください');return}if(!profile.poses.length){toast('先に知らせたい姿勢を登録してください');return}const expected=profile.mocopiMode||'standard';if((profile.base.mocopiMode||'standard')!==expected||profile.poses.some(p=>(p.mocopiMode||'standard')!==expected)){toast('装着モードが変わっています。基本姿勢と通知姿勢を再登録してください');return}prepareAudio();running=true;$('#startBtn').textContent='計測中';holdStart=0;renderReadiness();toast('計測を始めました');connect();sendPresentationState(true);evaluate()}
+  function stop(){running=false;sendPresentationState(false);holdStart=0;renderReadiness();renderDiagnostics()}
+  function connect(){if(socket&&(socket.readyState===WebSocket.OPEN||socket.readyState===WebSocket.CONNECTING))return;const host=location.hostname;if(!host){$('#connectionText').textContent='PythonサーバーのURLから開いてください';return}try{const wsUrl=location.protocol==='https:'?`wss://${location.host}/mocopi?role=dashboard`:`ws://${host}:8765/mocopi?role=dashboard`;socket=new WebSocket(wsUrl);socket.binaryType='arraybuffer';socket.onopen=()=>{renderReadiness();sendPresentationState(running)};socket.onmessage=e=>{if(typeof e.data==='string'){try{const message=JSON.parse(e.data);if(message.type==='presentation')presenterActive=message.active===true;else if(message.type==='alert'&&presenterActive)notifyDevice()}catch{}return}if(!(e.data instanceof ArrayBuffer))return;const pose=parseMocopiPacket(e.data);if(!pose){$('#diagReceive').textContent='データは届きましたが骨格として解析できません';return}const features=poseFeatures(pose);if(!Number.isFinite(features.leftElbow)||!Number.isFinite(features.rightElbow)){ $('#diagReceive').textContent=`骨格点 ${pose.size}件を解析・腕の判定点が不足`;return}lastPoseWorld=pose;lastBoneCount=pose.size;lastPacketAt=Date.now();current=Object.fromEntries(Object.entries(features).filter(([,v])=>Number.isFinite(v)));liveData=true;$('#updated').textContent='mocopiの実測データ';renderMetrics();renderReadiness();evaluate()};socket.onerror=()=>{};socket.onclose=()=>{if(socket&&socket.readyState===WebSocket.CLOSED)socket=null;presenterActive=false;$('#connectionText').textContent='中継未接続';$('#dot').classList.remove('on');if(location.hostname)setTimeout(connect,2500)}}catch{}}
+  $('#baseCapture').onclick=()=>{if(!hasFreshLiveData()){toast('モコピのライブデータを受信してから登録してください');return}profile.base={features:capture(),mocopiMode:profile.mocopiMode,savedAt:Date.now()};save();renderMetrics();toast(`${modeLabel(profile.mocopiMode)}の基本姿勢を登録しました`)};
+  $('#addPose').onclick=()=>{if(!hasFreshLiveData()){toast('モコピのライブデータを受信してから登録してください');return}const name=$('#poseName').value.trim();if(!name){toast('姿勢の名前を入力してください');$('#poseName').focus();return}profile.poses.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,features:capture(),mocopiMode:profile.mocopiMode});$('#poseName').value='';save();toast(`${name}を登録しました`)};
+  const testNotification=()=>{prepareAudio();notifyDevice();sendPhoneAlert('通知テスト');toast('選択した方法で通知しました')};$('#startBtn').onclick=start;$('#stopBtn').onclick=stop;$('#vibeBtnSide').onclick=testNotification;
+  $('#notifyVibration').checked=profile.notifyVibration!==false;$('#notifySound').checked=profile.notifySound!==false;
+  $('#notifyVibration').onchange=e=>{profile.notifyVibration=e.target.checked;save()};$('#notifySound').onchange=e=>{profile.notifySound=e.target.checked;save();prepareAudio()};
+  $('#trackingMode').onchange=e=>{profile.mocopiMode=e.target.value;running=false;sendPresentationState(false);holdStart=0;save();renderReadiness();toast('装着モード変更後は基本姿勢と通知姿勢を再登録してください')};
+  document.querySelectorAll('.simsel').forEach(b=>b.onclick=()=>setPose(b.dataset.sim));
+  $('#tolerance').oninput=e=>{profile.tolerance=Number(e.target.value);$('#tolText').textContent=`${profile.tolerance}°`;save()};$('#hold').oninput=e=>{profile.hold=Number(e.target.value);$('#holdText').textContent=`${(profile.hold/10).toFixed(1)}秒`;save()};
+  $('#clearBtn').onclick=()=>{if(confirm('この端末の姿勢登録をすべて消去しますか？')){profile={base:null,poses:[],tolerance:20,hold:8,notifyVibration:true,notifySound:true,mocopiMode:'upperBody'};save();toast('登録を消去しました')}};
+  renderProfile();renderMetrics();connect();syncProfileFromServer();setInterval(syncProfileFromServer,3000);setInterval(()=>{if(liveData&&!hasFreshLiveData()){liveData=false;current={};$('#updated').textContent='実測データなし';renderMetrics();evaluate()}renderDiagnostics();renderReadiness()},1000);
+})();
+</script>
+</body>
 </html>
