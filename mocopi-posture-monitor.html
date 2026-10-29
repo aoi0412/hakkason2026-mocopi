@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#eceff2">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap">
 <title>姿勢サポート | mocopi</title>
 <style>
   :root{--ink:#1b2433;--muted:#667085;--line:#d5dae1;--line-strong:#b6bdc8;--bg:#eceff2;--paper:#fbfcfd;--accent:#243b6b;--warn:#c03a3a;--ready:#1f6b5a;--wait:#2c3750;--setup:#8d6a24;--check:#9b5636}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 "Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 "Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP","Meiryo",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   button,input,select{font:inherit}button{cursor:pointer}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .shell{max-width:1200px;margin:auto;padding:28px 36px 72px}
@@ -37,7 +36,7 @@
   .btn:hover{background:var(--ink);color:var(--paper)}.btn:active{transform:translateY(1px)}
   .btn.primary{background:var(--ink);color:#fff}.btn.primary:hover{background:var(--accent);border-color:var(--accent)}
   .btn.danger{color:var(--warn);border-color:#e0b4b4}.btn.danger:hover{background:var(--warn);border-color:var(--warn);color:#fff}
-  .btn:disabled{cursor:not-allowed;opacity:.38;pointer-events:none}
+  .btn:disabled{cursor:not-allowed;opacity:.4}.btn:disabled:hover{background:transparent;color:var(--ink)}.btn.primary:disabled:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
   .subheading{font-size:15px;font-weight:700;margin:0 0 4px}
   .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:12px}
   .metric{min-width:0;padding:14px 0 18px;border-top:1px solid var(--line)}
